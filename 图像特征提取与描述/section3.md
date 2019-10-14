@@ -177,6 +177,7 @@ ORB算法结合了Fast和Brief算法，提出了构造金字塔，为Fast特征�
 
 
 
+
 1. 在不同的尺度上利用Fast算法检测特征点，采用Harris角点响应函数，根据角点的响应值排序，选取前N个特征点，作为本尺度的特征点。
 
 2. 计算特征点的主方向，计算以特征点为圆心半径为r的圆形邻域内的灰度质心位置，将从特征点位置到质心位置的方向做特征点的主方向。
@@ -258,7 +259,7 @@ kp,des = orb.detectAndCompute(gray,None)
 - kp: 关键点信息，包括位置，尺度，方向信息
 - des: 关键点描述符，每个关键点BRIEF特征向量，二进制字符串，
 
-1. 将关键点检测结果绘制在图像上
+2. 将关键点检测结果绘制在图像上
 
 ```python
 cv.drawKeypoints(image, keypoints, outputimage, color, flags)
