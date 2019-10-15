@@ -8,17 +8,17 @@
 
 # 1 图像噪声
 
-由于图像采集、处理、传输等过程不可避免的会受到噪声的污染，妨碍人们对图像理解及分析处理。常见的图像噪声有高斯噪声、椒盐噪声等。
+	由于图像采集、处理、传输等过程不可避免的会受到噪声的污染，妨碍人们对图像理解及分析处理。常见的图像噪声有高斯噪声、椒盐噪声等。
 
 ## 1.1 椒盐噪声
 
-椒盐噪声也称为脉冲噪声，是图像中经常见到的一种噪声，它是一种随机出现的白点或者黑点，可能是亮的区域有黑色像素或是在暗的区域有白色像素（或是两者皆有）。椒盐噪声的成因可能是影像讯号受到突如其来的强烈干扰而产生、类比数位转换器或位元传输错误等。例如失效的感应器导致像素值为最小值，饱和的感应器导致像素值为最大值。
+	椒盐噪声也称为脉冲噪声，是图像中经常见到的一种噪声，它是一种随机出现的白点或者黑点，可能是亮的区域有黑色像素或是在暗的区域有白色像素（或是两者皆有）。椒盐噪声的成因可能是影像讯号受到突如其来的强烈干扰而产生、类比数位转换器或位元传输错误等。例如失效的感应器导致像素值为最小值，饱和的感应器导致像素值为最大值。
 
 ![image-20190927163654718](assets/image-20190927163654718.png)
 
 ## 1.2 高斯噪声
 
-高斯噪声是指噪声密度函数服从高斯分布的一类噪声。由于高斯噪声在空间和频域中数学上的易处理性，这种噪声(也称为正态噪声)模型经常被用于实践中。高斯随机变量z的概率密度函数由下式给出：
+	高斯噪声是指噪声密度函数服从高斯分布的一类噪声。由于高斯噪声在空间和频域中数学上的易处理性，这种噪声(也称为正态噪声)模型经常被用于实践中。高斯随机变量z的概率密度函数由下式给出：
 $$
 p(z)=\frac{1}{\sqrt{2 \pi} \sigma} e^{\frac{-(z-\mu)^{2}}{2 \sigma^{2}}}
 $$
@@ -34,13 +34,13 @@ $$
 
 # 2 图像平滑简介
 
-图像平滑从信号处理的角度看就是去除其中的高频信息，保留低频信息。因此我们可以对图像实施低通滤波。低通滤波可以去除图像中的噪声，对图像进行平滑。
+	图像平滑从信号处理的角度看就是去除其中的高频信息，保留低频信息。因此我们可以对图像实施低通滤波。低通滤波可以去除图像中的噪声，对图像进行平滑。
 
 根据滤波器的不同可分为均值滤波，高斯滤波，中值滤波， 双边滤波。
 
 ## 2.1 均值滤波
 
-	采用均值滤波模板对图像噪声进行滤除。令![S_{x y}](https://math.jianshu.com/math?formula=S_%7Bx%20y%7D) 表示中心在(x, y)点，尺寸为m×n 的矩形子图像窗口的坐标组。 均值滤波器可表示为：
+采用均值滤波模板对图像噪声进行滤除。令![S_{x y}](https://math.jianshu.com/math?formula=S_%7Bx%20y%7D) 表示中心在(x, y)点，尺寸为m×n 的矩形子图像窗口的坐标组。 均值滤波器可表示为：
 $$
 \hat{f}(x, y)=\frac{1}{m n} \sum_{(s, t) \in S_{x y}} g(s, t)
 $$
@@ -75,11 +75,11 @@ cv.blur(src, ksize, anchor, borderType)
 import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
-
+# 1 图像读取
 img = cv.imread('./image/dogsp.jpeg')
-
+# 2 均值滤波
 blur = cv.blur(img,(5,5))
-
+# 3 图像显示
 plt.figure(figsize=(10,8),dpi=100)
 plt.subplot(121),plt.imshow(img[:,:,::-1]),plt.title('原图')
 plt.xticks([]), plt.yticks([])
@@ -120,7 +120,7 @@ G(x,y)的分布是一个突起的帽子的形状。这里的σ可以看作两个
 
 这9个点的权重总和等于0.4787147，如果只计算这9个点的加权平均，还必须让它们的权重之和等于1，因此上面9个值还要分别除以0.4787147，得到最终的权重矩阵。
 
-			**![image-20190928110455467](assets/image-20190928110455467.png)**
+		**![image-20190928110455467](assets/image-20190928110455467.png)**
 
 
 
@@ -164,11 +164,11 @@ cv2.GaussianBlur(src,ksize,sigmaX,sigmay,borderType)
 import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
-
+# 1 图像读取
 img = cv.imread('./image/dogGasuss.jpeg')
-
+# 2 高斯滤波
 blur = cv.GaussianBlur(img,(3,3),1)
-
+# 3 图像显示
 plt.figure(figsize=(10,8),dpi=100)
 plt.subplot(121),plt.imshow(img[:,:,::-1]),plt.title('原图')
 plt.xticks([]), plt.yticks([])
@@ -181,9 +181,9 @@ plt.show()
 
 ## 2.3 中值滤波
 
-中值滤波是一种典型的非线性滤波技术，基本思想是用像素点邻域灰度值的中值来代替该像素点的灰度值。
+	中值滤波是一种典型的非线性滤波技术，基本思想是用像素点邻域灰度值的中值来代替该像素点的灰度值。
 
-中值滤波对椒盐噪声（salt-and-pepper noise）来说尤其有用，因为它不依赖于邻域内那些与典型值差别很大的值。
+	中值滤波对椒盐噪声（salt-and-pepper noise）来说尤其有用，因为它不依赖于邻域内那些与典型值差别很大的值。
 
 API：
 
@@ -202,11 +202,11 @@ cv.medianBlur(src, ksize )
 import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
-
+# 1 图像读取
 img = cv.imread('./image/dogsp.jpeg')
-
+# 2 中值滤波
 blur = cv.medianBlur(img,5)
-
+# 3 图像展示
 plt.figure(figsize=(10,8),dpi=100)
 plt.subplot(121),plt.imshow(img[:,:,::-1]),plt.title('原图')
 plt.xticks([]), plt.yticks([])

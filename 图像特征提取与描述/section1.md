@@ -83,18 +83,18 @@ dst=cv.cornerHarris(src, blockSize, ksize, k)
 import cv2 as cv
 import numpy as np 
 import matplotlib.pyplot as plt
+# 1 读取图像，并转换成灰度图像
 img = cv.imread('./image/chessboard.jpg')
 gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-# 输入图像必须是 float32
+# 2 角点检测
+# 2.1 输入图像必须是 float32
 gray = np.float32(gray)
 
-# 最后一个参数在 0.04 到 0.05 之间
+# 2.2 最后一个参数在 0.04 到 0.05 之间
 dst = cv.cornerHarris(gray,2,3,0.04)
-# 膨胀
-dst = cv.dilate(dst,None)
-# 设置阈值，将角点绘制出来，阈值根据图像进行选择
+# 3 设置阈值，将角点绘制出来，阈值根据图像进行选择
 img[dst>0.001*dst.max()] = [0,0,255]
-
+# 4 图像显示
 plt.figure(figsize=(10,8),dpi=100)
 plt.imshow(img[:,:,::-1]),plt.title('Harris角点检测')
 plt.xticks([]), plt.yticks([])
@@ -156,16 +156,16 @@ corners = cv2.goodFeaturesToTrack ( image, maxcorners, qualityLevel, minDistance
 import numpy as np 
 import cv2 as cv
 import matplotlib.pyplot as plt
-
+# 1 读取图像
 img = cv.imread('./image/tv.jpg') 
 gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
-# 角点检测
+# 2 角点检测
 corners = cv.goodFeaturesToTrack(gray,1000,0.01,10)  
-
+# 3 绘制角点
 for i in corners:
     x,y = i.ravel()
     cv.circle(img,(x,y),2,(0,0,255),-1)
-
+# 4 图像展示
 plt.figure(figsize=(10,8),dpi=100)
 plt.imshow(img[:,:,::-1]),plt.title('shi-tomasi角点检测')
 plt.xticks([]), plt.yticks([])

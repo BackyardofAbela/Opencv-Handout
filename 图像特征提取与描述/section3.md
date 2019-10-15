@@ -113,33 +113,33 @@ kp = fast.detect(grayImg, None)
 import numpy as np
 import cv2 as cv
 from matplotlib import pyplot as plt
-
+# 1 读取图像
 img = cv.imread('./image/tv.jpg')
-
-# 创建一个Fast对象，传入阈值，注意：可以处理彩色空间图像
+# 2 Fast角点检测
+# 2.1 创建一个Fast对象，传入阈值，注意：可以处理彩色空间图像
 fast = cv.FastFeatureDetector_create(threshold=30)
 
-# 检测图像上的关键点
+# 2.2 检测图像上的关键点
 kp = fast.detect(img,None)
-# 在图像上绘制关键点
+# 2.3 在图像上绘制关键点
 img2 = cv.drawKeypoints(img, kp, None, color=(0,0,255))
 
-# 输出默认参数
+# 2.4 输出默认参数
 print( "Threshold: {}".format(fast.getThreshold()) )
 print( "nonmaxSuppression:{}".format(fast.getNonmaxSuppression()) )
 print( "neighborhood: {}".format(fast.getType()) )
 print( "Total Keypoints with nonmaxSuppression: {}".format(len(kp)) )
 
 
-# 关闭非极大值抑制
+# 2.5 关闭非极大值抑制
 fast.setNonmaxSuppression(0)
 kp = fast.detect(img,None)
 
 print( "Total Keypoints without nonmaxSuppression: {}".format(len(kp)) )
-
+# 2.6 绘制为进行非极大值抑制的结果
 img3 = cv.drawKeypoints(img, kp, None, color=(0,0,255))
 
-# 绘制图像
+# 3 绘制图像
 fig,axes=plt.subplots(nrows=1,ncols=2,figsize=(10,8),dpi=100)
 axes[0].imshow(img2[:,:,::-1])
 axes[0].set_title("加入非极大值抑制")
@@ -174,6 +174,7 @@ ORB算法结合了Fast和Brief算法，提出了构造金字塔，为Fast特征�
    $$
    SIZE = (H*\frac{1}{\sigma_s})\times(W*\frac{1}{\sigma_s})
    $$
+
 
 
 
@@ -271,21 +272,21 @@ cv.drawKeypoints(image, keypoints, outputimage, color, flags)
 import numpy as np
 import cv2 as cv
 from matplotlib import pyplot as plt
-
+# 1 图像读取
 img = cv.imread('./image/tv.jpg')
 
-# 实例化ORB对象
+# 2 ORB角点检测
+# 2.1 实例化ORB对象
 orb = cv.ORB_create(nfeatures=500)
-
-# 检测关键点,并计算特征描述符
+# 2.2 检测关键点,并计算特征描述符
 kp,des = orb.detectAndCompute(img,None)
 
 print(des.shape)
 
-# 将关键点绘制在图像上
+# 3 将关键点绘制在图像上
 img2 = cv.drawKeypoints(img, kp, None, color=(0,0,255), flags=0)
 
-# 绘制图像
+# 4. 绘制图像
 plt.figure(figsize=(10,8),dpi=100)
 plt.imshow(img2[:,:,::-1])
 plt.xticks([]), plt.yticks([])

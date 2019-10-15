@@ -1,9 +1,8 @@
-# OpenCV的模块及数据结构
+# OpenCV的模块
 
 **学习目标**
 
 - 了解OpenCV的主要模块
-- 熟练掌握OpenCV的数据结构
 
 # 1 OpenCV的模块
 
@@ -30,101 +29,9 @@
 - **calib3d模块**即Calibration（校准）3D，这个模块主要是相机校准和三维重建相关的内容。包含了基本的多视角几何算法，单个立体摄像头标定，物体姿态估计，立体相似性算法，3D信息的重建等等。
 - **G-API模块**包含超高效的图像处理pipeline引擎
 
-# 2 OpenCV的数据结构
-
-- OpenCV提供了多种基本的数据类型，常用的数据结构有以下几种:
-  - **Mat类**
-  - **Point类**
-  - **Size类**
-  - **Rect类**
-  - **Scalar类**
-  - **Vec类**
-  - **Range类**
-
-下面我们重点说一下MAT类。
-
-## 2.1 Mat类
-
-要熟练使用OpenCV，最重要的就是学会Mat数据结构，在OpenCV中Mat被定义为一个类，把它看作一个数据结构，以矩阵的形式来存储数据的。
-
-Mat的常见属性：
-
-- dims：表示矩阵M的维度，如2$*$3的矩阵为2维，3$*$4$*$5的矩阵为3维
-- data：uchar型的指针，指向内存中存放矩阵数据的一块内存
-- rows, cols：矩阵的行数、列数
-- type：表示了矩阵中元素的类型(depth)与矩阵的通道个数(channels)；命名规则为CV_ + (位数）+（数据类型）+（通道数）
-  其中：U（unsigned integer）-- 无符号整数
-  S（signed integer）-- 有符号整数
-  F（float）-- 浮点数
-  例如CV_8UC3，可拆分为：CV_：type的前缀,
-  8U：8位无符号整数(depth)，C3：3通道(channels)
-- depth：即图像每一个像素的位数(bits)；这个值和type是相关的。例如CV_8UC3中depth则是CV_8U。
-- channels：通道数量，若图像为RGB、HSV等三通道图像，则channels = 3；若图像为灰度图，则为单通道，则channels = 1
-- elemSize：矩阵中每一个元素的数据大小
-  elemSize = channels * depth / 8 ，例如：type是CV_8UC3，elemSize = 3 * 8 / 8 = 3bytes
-- elemSize1：单通道的矩阵元素占用的数据大小，elemSize1 = depth / 8，例如：type是CV_8UC3，elemSize1 = 8 / 8 = 1bytes
-
-
-
-## 2.2 其他数据类型
-
-1.**点Point类**
-
-包含两个整型数据成员x和y，即坐标点
-
-2.**尺寸Size类**
-
-数据成员是width和height，一般用来表示图像的大小，或者矩阵的大小
-
-3.**矩形Rect类**
-
-数据成员x,y,width,height，分别代表这个矩形左上角的坐标点和矩形的宽度和高度
-
-4.**颜色Scalar类**
-
-Scalar_(_Tp v0, _Tp v1, _Tp v2=0, _Tp v3=0)
-
-这个默认构造函数的四个参数分别表示RGB+Alpha颜色中的:
-
-v0---表示RGB中的B（蓝色）分量
-
-v1---表示RGB中的G（绿色）分量
-
-v2---表示RGB中的R（红色）分量
-
-v3---表示Alpha是透明色分量
-
-5.**向量Vec类**
-
-一个“一维矩阵”
-
-Vec<int,n>---就是用类型int和向量模板类做一个实例化。其中第一个参数int表示Vec中存储的为int类型；第二个参数n为一个整型值，表示Vec每个对象中存储n个int值，也就是n维向量(列向量)
-
-6.**Range类**
-
-用于指定一个连续的子序列，例如一个轮廓的一部分，或者一个矩阵的列空间
-
-
-
 
 
 **总结**
 
 1. OpenCV 的模块主要有core, highgui, imgproc
-
-2. OpenCV中的数据结构有：
-
-   Mat类（熟悉）
-
-   Point类
-
-   Size类
-
-   Rect类
-
-   Scalar类
-
-   Vec类
-
-   Range类（其他了解）
 

@@ -7,9 +7,9 @@
 
 # 1 原理
 
-边缘检测是图像处理和计算机视觉中的基本问题，边缘检测的目的是标识数字图像中亮度变化明显的点。图像属性中的显著变化通常反映了属性的重要事件和变化。
+	边缘检测是图像处理和计算机视觉中的基本问题，边缘检测的目的是标识数字图像中亮度变化明显的点。图像属性中的显著变化通常反映了属性的重要事件和变化。
 
-图像边缘检测大幅度地减少了数据量，并且剔除了可以认为不相关的信息，保留了图像重要的结构属性。有许多方法用于边缘检测，它们的绝大部分可以划分为两类：**基于搜索**和**基于零穿越**。
+	图像边缘检测大幅度地减少了数据量，并且剔除了可以认为不相关的信息，保留了图像重要的结构属性。有许多方法用于边缘检测，它们的绝大部分可以划分为两类：**基于搜索**和**基于零穿越**。
 
 - 基于搜索：通过寻找图像一阶导数中的最大值来检测边界，然后利用计算结果估计边缘的局部方向，通常采用梯度的方向，并利用此方向找到局部梯度模的最大值，代表算法是Sobel算子和Scharr算子。
 
@@ -25,7 +25,7 @@
 
 ## 2.1 方法
 
-	假设要处理的图像为$$I$$，在两个方向求导:
+假设要处理的图像为$$I$$，在两个方向求导:
 
 -  **水平变化**: 将图像$$I$$ 与奇数大小的模版进行卷积，结果为$$G_x$$。比如，当模板大小为3时, $$G_x$$为:
   $$
@@ -34,16 +34,10 @@
 
 
 
-
-
-
 - **垂直变化**: 将图像$$I$$与奇数大小的模板进行卷积，结果为$$G_y$$。比如，当模板大小为3时, $$G_y$$为:
   $$
   G_y = \left[\begin{matrix}-1&-2&-1\\0&0&0\\+1&+2&+1\end{matrix}\right]*I
   $$
-
-
-
 
 
 
@@ -61,10 +55,6 @@ $$
 $$
 G_y = \left[\begin{matrix}-3&-10&-3\\0&0&0\\+3&+10&+3\end{matrix}\right]*I
 $$
-
-
-
-
 
 ## 2.2 应用
 
@@ -105,17 +95,17 @@ result = cv2.addWeighted(src1, alpha, src2, beta) # 图像组合
 import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
-
+# 1 读取图像
 img = cv.imread('./image/horse.jpg',0)
-# 计算Sobel卷积结果
+# 2 计算Sobel卷积结果
 x = cv.Sobel(img, cv.CV_16S, 1, 0)
 y = cv.Sobel(img, cv.CV_16S, 0, 1)
-# 将数据进行转换
+# 3 将数据进行转换
 Scale_absX = cv.convertScaleAbs(x)  # convert 转换  scale 缩放
 Scale_absY = cv.convertScaleAbs(y)
-# 合成
+# 4 结果合成
 result = cv.addWeighted(Scale_absX, 0.5, Scale_absY, 0.5, 0)
-
+# 5 图像显示
 plt.figure(figsize=(10,8),dpi=100)
 plt.subplot(121),plt.imshow(img,cmap=plt.cm.gray),plt.title('原图')
 plt.xticks([]), plt.yticks([])
@@ -167,11 +157,12 @@ laplacian = cv2.Laplacian(src, ddepth[, dst[, ksize[, scale[, delta[, borderType
 import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
-
+# 1 读取图像
 img = cv.imread('./image/horse.jpg',0)
+# 2 laplacian转换
 result = cv.Laplacian(img,cv.CV_16S)
 Scale_abs = cv.convertScaleAbs(result)
-
+# 3 图像展示
 plt.figure(figsize=(10,8),dpi=100)
 plt.subplot(121),plt.imshow(img,cmap=plt.cm.gray),plt.title('原图')
 plt.xticks([]), plt.yticks([])
@@ -243,11 +234,13 @@ canny = cv2.Canny(image, threshold1, threshold2)
 import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
-
+# 1 图像读取
 img = cv.imread('./image/horse.jpg',0)
+# 2 Canny边缘检测
 lowThreshold = 0
 max_lowThreshold = 100
 canny = cv.Canny(img, lowThreshold, max_lowThreshold) 
+# 3 图像展示
 plt.figure(figsize=(10,8),dpi=100)
 plt.subplot(121),plt.imshow(img,cmap=plt.cm.gray),plt.title('原图')
 plt.xticks([]), plt.yticks([])

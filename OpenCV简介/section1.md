@@ -6,7 +6,6 @@
 
 - 能够独立安装OpenCV
 
-- 了解OpenCV有哪些模块，熟悉OpenCV的基本数据结构
 
 
 # 1 什么是OpenCV

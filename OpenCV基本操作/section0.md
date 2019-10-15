@@ -46,7 +46,7 @@ cv.imread()
    ```python
    import numpy as np
    import cv2 as cv
-   # Load an color image in grayscale
+   # 以灰度图的形式读取图像
    img = cv.imread('messi5.jpg',0)
    ```
 
@@ -67,13 +67,16 @@ cv.imshow()
 
 **注意：在调用显示图像的API后，要调用cv.waitKey()给图像绘制留下时间，否则窗口会出现无响应情况，并且图像无法显示出来**。
 
+另外我们也可使用matplotlib对图像进行展示。
+
 2. 参考代码
 
    ```python
+   # opencv中显示
    cv.imshow('image',img)
    cv.waitKey(0)
-   # 释放窗口
-   cv.destroyAllWindows()
+   # matplotlib中展示
+   plt.imshow(img[:,:,::-1])
    ```
 
 ## 1.3 保存图像
@@ -102,14 +105,19 @@ cv.imshow()
    ```python
    import numpy as np
    import cv2 as cv
+   import matplotlib.pyplot as plt
+   # 1 读取图像
    img = cv.imread('messi5.jpg',0)
+   # 2 显示图像
+   # 2.1 利用opencv展示图像
    cv.imshow('image',img)
+   # 2.2 在matplotplotlib中展示图像
+   plt.imshow(img[:,:,::-1])
+   plt.title('匹配结果'), plt.xticks([]), plt.yticks([])
+   plt.show()
    k = cv.waitKey(0)
-   if k == 27:         # wait for ESC key to exit
-   cv.destroyAllWindows()
-   elif k == ord('s'): # wait for 's' key to save and exit
+   # 3 保存图像
    cv.imwrite('messigray.png',img)
-   cv.destroyAllWindows()
    ```
 
 # 2 绘制几何图形
@@ -174,16 +182,19 @@ cv.putText(img,text,station, font, fontsize,color,thickness,cv.LINE_AA)
 ```python
 import numpy as np
 import cv2 as cv
-# Create a black image
+import matplotlib.pyplot as plt
+# 1 创建一个空白的图像
 img = np.zeros((512,512,3), np.uint8)
-# Draw a diagonal blue line with thickness of 5 px
+# 2 绘制图形
 cv.line(img,(0,0),(511,511),(255,0,0),5)
 cv.rectangle(img,(384,0),(510,128),(0,255,0),3)
 cv.circle(img,(447,63), 63, (0,0,255), -1)
 font = cv.FONT_HERSHEY_SIMPLEX
 cv.putText(img,'OpenCV',(10,500), font, 4,(255,255,255),2,cv.LINE_AA)
-cv.imshow("img",img)
-cv.waitKey(0)
+# 3 图像展示
+plt.imshow(img[:,:,::-1])
+plt.title('匹配结果'), plt.xticks([]), plt.yticks([])
+plt.show()
 ```
 
 结果：

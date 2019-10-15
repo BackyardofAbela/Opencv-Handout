@@ -43,9 +43,7 @@
 img1 = cv.imread('ml.png')
 img2 = cv.imread('opencv-logo.png')
 dst = cv.addWeighted(img1,0.7,img2,0.3,0)
-cv.imshow('dst',dst)
-cv.waitKey(0)
-cv.destroyAllWindows()
+plt.imshow(dst[:,:,::-1])
 ```
 
 窗口将如下图显示：
@@ -57,19 +55,19 @@ cv.destroyAllWindows()
 这里包括的按位操作有：AND，OR，NOT，XOR 等。当我们提取图像的一部分，选择非矩形ROI时这些操作会很有用。下面的例子就是教给我们如何改变一幅图的特定区域。把OpenCV的标志放到另一幅图像上。如果使用图像的加法，图像的颜色会改变，如果使用图像的混合，会得到一个透明的效果，但是我不希望它透明。我们可以通过下面的按位运算实现：
 
 ```python
-# Load two images
+# 1 读取图像
 img1 = cv.imread('messi5.jpg')
 img2 = cv.imread('opencv-logo-white.png')
-# I want to put logo on top-left corner, So I create a ROI
+# 2 创建ROI区域
 rows,cols,channels = img2.shape
 roi = img1[0:rows, 0:cols ]
-# Now create a mask of logo and create its inverse mask also
+# 3 创建蒙版
 img2gray = cv.cvtColor(img2,cv.COLOR_BGR2GRAY)
 ret, mask = cv.threshold(img2gray, 10, 255, cv.THRESH_BINARY)
 mask_inv = cv.bitwise_not(mask)
-# Now black-out the area of logo in ROI
+# 4 蒙版
 img1_bg = cv.bitwise_and(roi,roi,mask = mask_inv)
-# Take only region of logo from logo image.
+# 5 按位与添加logo.
 img2_fg = cv.bitwise_and(img2,img2,mask = mask)
 # Put logo in ROI and modify the main image
 dst = cv.add(img1_bg,img2_fg)

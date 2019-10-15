@@ -15,7 +15,7 @@
 
 ## 1.1 原理
 
-直方图是对数据进行统计的一种方法，并且将统计值组织到一系列实现定义好的 bin 当中。其中， bin 为直方图中经常用到的一个概念，可以译为 “直条” 或 “组距”，其数值是从数据中计算出的特征统计量，这些数据可以是诸如梯度、方向、色彩或任何其他特征。
+	直方图是对数据进行统计的一种方法，并且将统计值组织到一系列实现定义好的 bin 当中。其中， bin 为直方图中经常用到的一个概念，可以译为 “直条” 或 “组距”，其数值是从数据中计算出的特征统计量，这些数据可以是诸如梯度、方向、色彩或任何其他特征。
 
   图像直方图（Image Histogram）是用以表示数字图像中亮度分布的直方图，标绘了图像中每个亮度值的像素个数。这种直方图中，横坐标的左侧为较暗的区域，而右侧为较亮的区域。因此一张较暗图片的直方图中的数据多集中于左侧和中间部分，而整体明亮、只有少量阴影的图像则相反。
 
@@ -70,11 +70,11 @@ cv2.calcHist(images,channels,mask,histSize,ranges[,hist[,accumulate]])
 import numpy as np
 import cv2 as cv
 from matplotlib import pyplot as plt
-# 直接以灰度图的方式读入
+# 1 直接以灰度图的方式读入
 img = cv.imread('./image/cat.jpeg',0)
-# 统计灰度图
+# 2 统计灰度图
 histr = cv.calcHist([img],[0],None,[256],[0,256])
-# 绘制灰度图
+# 3 绘制灰度图
 plt.figure(figsize=(10,6),dpi=100)
 plt.plot(histr)
 plt.grid()
@@ -85,7 +85,7 @@ plt.show()
 
 ## 1.3 掩膜的应用
 
-	上面我们使用cv.calcHist（）来查找完整图像的直方图。 如果要查找图像某些区域的直方图，该怎么办？ 只需在要查找直方图的区域上创建一个白色的蒙版图像，否则创建黑色， 然后将其作为掩码mask传递即可。
+上面我们使用cv.calcHist（）来查找完整图像的直方图。 如果要查找图像某些区域的直方图，该怎么办？ 只需在要查找直方图的区域上创建一个白色的蒙版图像，否则创建黑色， 然后将其作为掩码mask传递即可。
 
 示例：
 
@@ -93,17 +93,17 @@ plt.show()
 import numpy as np
 import cv2 as cv
 from matplotlib import pyplot as plt
-# 直接以灰度图的方式读入
+# 1. 直接以灰度图的方式读入
 img = cv.imread('./image/cat.jpeg',0)
-# 创建蒙版
+# 2. 创建蒙版
 mask = np.zeros(img.shape[:2], np.uint8)
 mask[400:650, 200:500] = 255
-# 掩模
+# 3.掩模
 masked_img = cv.bitwise_and(img,img,mask = mask)
-# 统计掩膜后图像的灰度图
+# 4. 统计掩膜后图像的灰度图
 mask_histr = cv.calcHist([masked_img],[0],None,[256],[1,256])
 histr = cv.calcHist([img],[0],None,[256],[0,256])
-
+# 5. 图像展示
 fig,axes=plt.subplots(nrows=2,ncols=2,figsize=(10,8))
 axes[0,0].imshow(img,cmap=plt.cm.gray)
 axes[0,0].set_title("原图")
@@ -124,7 +124,7 @@ plt.show()
 ## 2.1 原理与应用
 
 	直方图均衡化是图像处理领域中增强图像对比度的一种方法。
-	
+
 	如果一副图像的像素占有很多的灰度级而且分布均匀，那么这样的图像往往有高对比度和多变的灰度色调。“直方图均衡化”是把原始图像的灰度直方图从比较集中的某个灰度区间变成在全部灰度范围内的均匀分布。直方图均衡化就是对图像进行非线性拉伸，重新分配图像像素值，使一定灰度范围内的像素数量大致相同。
 
 ![image-20190928162111755](assets/image-20190928162111755.png)
@@ -149,11 +149,11 @@ dst = cv.equalizeHist(img)
 import numpy as np
 import cv2 as cv
 from matplotlib import pyplot as plt
-# 直接以灰度图的方式读入
+# 1. 直接以灰度图的方式读入
 img = cv.imread('./image/cat.jpeg',0)
-# 均衡化处理
+# 2. 均衡化处理
 dst = cv.equalizeHist(img)
-
+# 3. 结果展示
 fig,axes=plt.subplots(nrows=2,ncols=2,figsize=(10,8),dpi=100)
 axes[0].imshow(img,cmap=plt.cm.gray)
 axes[0].set_title("原图")
@@ -166,9 +166,9 @@ plt.show()
 
 ## 2.2 自适应的直方图均衡化
 
-上述的直方图均衡，我们考虑的是图像的全局对比度。 的确在进行完直方图均衡化之后，图片背景的对比度被改变了，在猫腿这里太暗，我们丢失了很多信息，所以在许多情况下，这样做的效果并不好。
+	上述的直方图均衡，我们考虑的是图像的全局对比度。 的确在进行完直方图均衡化之后，图片背景的对比度被改变了，在猫腿这里太暗，我们丢失了很多信息，所以在许多情况下，这样做的效果并不好。
 
-为了解决这个问题， 需要使用自适应的直方图均衡化。 此时， 整幅图像会被分成很多小块，这些小块被称为“tiles”（在 OpenCV 中 tiles 的 大小默认是 8x8），然后再对每一个小块分别进行直方图均衡化。 所以在每一个的区域中， 直方图会集中在某一个小的区域中）。如果有噪声的话，噪声会被放大。为了避免这种情况的出现要使用对比度限制。对于每个小块来说，如果直方图中的 bin 超过对比度的上限的话，就把 其中的像素点均匀分散到其他 bins 中，然后在进行直方图均衡化。最后，为了 去除每一个小块之间的边界，再使用双线性差值，对 每一小块进行拼接。
+	为了解决这个问题， 需要使用自适应的直方图均衡化。 此时， 整幅图像会被分成很多小块，这些小块被称为“tiles”（在 OpenCV 中 tiles 的 大小默认是 8x8），然后再对每一个小块分别进行直方图均衡化。 所以在每一个的区域中， 直方图会集中在某一个小的区域中）。如果有噪声的话，噪声会被放大。为了避免这种情况的出现要使用对比度限制。对于每个小块来说，如果直方图中的 bin 超过对比度的上限的话，就把 其中的像素点均匀分散到其他 bins 中，然后在进行直方图均衡化。最后，为了 去除每一个小块之间的边界，再使用双线性差值，对 每一小块进行拼接。
 
 API：
 
@@ -186,11 +186,12 @@ cv.createCLAHE(clipLimit, tileGridSize)
 ```python
 import numpy as np
 import cv2 as cv
+# 1. 以灰度图形式读取图像
 img = cv.imread('./image/cat.jpeg',0)
-# 创建一个自适应均衡化的对象，并应用于原始图像
+# 2. 创建一个自适应均衡化的对象，并应用于图像
 clahe = cv.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
 cl1 = clahe.apply(img)
-
+# 3. 图像展示
 fig,axes=plt.subplots(nrows=1,ncols=2,figsize=(10,8),dpi=100)
 axes[0].imshow(img,cmap=plt.cm.gray)
 axes[0].set_title("原图")

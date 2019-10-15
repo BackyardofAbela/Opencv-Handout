@@ -71,18 +71,21 @@ res = cv.matchTemplate(img,template,method)
 import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
+# 1 图像和模板读取
 img = cv.imread('./image/wulin2.jpeg')
 template = cv.imread('./image/wulin.jpeg')
 h,w,l = template.shape
-# 模板匹配
+# 2 模板匹配
+# 2.1 模板匹配
 res = cv.matchTemplate(img, template, cv.TM_CCORR)
-# 返回图像中最匹配的位置，确定左上角的坐标
+# 2.2 返回图像中最匹配的位置，确定左上角的坐标，并将匹配位置绘制在图像上
 min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
 # 使用平方差时最小值为最佳匹配位置
 # top_left = min_loc
 top_left = max_loc
 bottom_right = (top_left[0] + w, top_left[1] + h)
 cv.rectangle(img, top_left, bottom_right, (0,255,0), 2)
+# 3 图像显示
 plt.imshow(img[:,:,::-1])
 plt.title('匹配结果'), plt.xticks([]), plt.yticks([])
 plt.show()
@@ -210,7 +213,7 @@ edges = cv.Canny(gray, 50, 150)
 
 # 2.霍夫直线变换
 lines = cv.HoughLines(edges, 0.8, np.pi / 180, 150)
-# 3.将检测的线画出来（注意是极坐标噢）
+# 3.将检测的线绘制在图像上（注意是极坐标噢）
 for line in lines:
     rho, theta = line[0]
     a = np.cos(theta)
@@ -222,7 +225,7 @@ for line in lines:
     x2 = int(x0 - 1000 * (-b))
     y2 = int(y0 - 1000 * (a))
     cv.line(img, (x1, y1), (x2, y2), (0, 255, 0))
-
+# 4. 图像显示
 plt.figure(figsize=(10,8),dpi=100)
 plt.imshow(img[:,:,::-1]),plt.title('霍夫变换线检测')
 plt.xticks([]), plt.yticks([])
@@ -286,20 +289,20 @@ plt.show()
    import cv2 as cv
    import numpy as np
    import matplotlib.pyplot as plt
-   
+   # 1 读取图像，并转换为灰度图
    planets = cv.imread("./image/star.jpeg")
    gay_img = cv.cvtColor(planets, cv.COLOR_BGRA2GRAY)
-   # 进行中值模糊，去噪点
+   # 2 进行中值模糊，去噪点
    img = cv.medianBlur(gay_img, 7)  
-   # 霍夫圆检测
+   # 3 霍夫圆检测
    circles = cv.HoughCircles(img, cv.HOUGH_GRADIENT, 1, 200, param1=100, param2=30, minRadius=0, maxRadius=100)
-   # 将检测结果绘制在图像上
+   # 4 将检测结果绘制在图像上
    for i in circles[0, :]:  # 遍历矩阵每一行的数据
        # 绘制圆形
        cv.circle(planets, (i[0], i[1]), i[2], (0, 255, 0), 2)
        # 绘制圆心
        cv.circle(planets, (i[0], i[1]), 2, (0, 0, 255), 3)
-   
+   # 5 图像显示
    plt.figure(figsize=(10,8),dpi=100)
    plt.imshow(planets[:,:,::-1]),plt.title('霍夫变换圆检测')
    plt.xticks([]), plt.yticks([])

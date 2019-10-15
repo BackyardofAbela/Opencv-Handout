@@ -44,23 +44,24 @@ cv2.resize(src,dsize,fx=0,fy=0,interpolation=cv2.INTER_LINEAR)
      ```python
      import numpy as np
      import cv2 as cv
-     
+     # 1. 读取图片
      img1 = cv.imread("./image/dog.jpeg")
-     
-     # 绝对尺寸
+     # 2.图像缩放
+     # 2.1 绝对尺寸
      rows,cols = img1.shape[:2]
      res = cv.resize(img1,(2*cols,2*rows),interpolation=cv.INTER_CUBIC)
      
-     # 相对尺寸
+     # 2.2 相对尺寸
      res1 = cv.resize(img1,None,fx=0.5,fy=0.5)
      
-     # 图像显示(生成窗口绘制图像)
+     # 3 图像显示
+     # 3.1 使用opencv显示图像(不推荐)
      cv.imshow("orignal",img1)
      cv.imshow("enlarge",res)
      cv.imshow("shrink）",res1)
      cv.waitKey(0)
      
-     # 在jupyternotebook中显示图像
+     # 3.2 使用matplotlib显示图像
      fig,axes=plt.subplots(nrows=1,ncols=3,figsize=(10,8),dpi=100)
      axes[0].imshow(res[:,:,::-1])
      axes[0].set_title("绝对尺度（放大）")
@@ -111,13 +112,15 @@ cv.warpAffine(img,M,dsize)
 import numpy as np
 import cv2 as cv
 import matplotlib.pyplot as plt
+# 1. 读取图像
 img1 = cv.imread("./image/image2.jpg")
-rows,cols = img1.shape[:2]
 
-# 平移矩阵
-M = M = np.float32([[1,0,100],[0,1,50]])
+# 2. 图像平移
+rows,cols = img1.shape[:2]
+M = M = np.float32([[1,0,100],[0,1,50]])# 平移矩阵
 dst = cv.warpAffine(img1,M,(cols,rows))
 
+# 3. 图像显示
 fig,axes=plt.subplots(nrows=1,ncols=2,figsize=(10,8),dpi=100)
 axes[0].imshow(img1[:,:,::-1])
 axes[0].set_title("原图")
@@ -156,13 +159,17 @@ plt.show()
    import numpy as np
    import cv2 as cv
    import matplotlib.pyplot as plt
+   # 1 读取图像
    img = cv.imread("./image/image2.jpg")
+   
+   # 2 图像旋转
    rows,cols = img.shape[:2]
-   # 生成旋转矩阵
+   # 2.1 生成旋转矩阵
    M = cv.getRotationMatrix2D((cols/2,rows/2),90,1)
-   # 进行放射变换
+   # 2.2 进行旋转变换
    dst = cv.warpAffine(img,M,(cols,rows))
    
+   # 3 图像展示
    fig,axes=plt.subplots(nrows=1,ncols=2,figsize=(10,8),dpi=100)
    axes[0].imshow(img1[:,:,::-1])
    axes[0].set_title("原图")
@@ -178,7 +185,6 @@ plt.show()
 ## 4 仿射变换
 
 	图像的仿射变换涉及到图像的形状位置角度的变化，是深度学习预处理中常到的功能,仿射变换具主要是对图像的缩放scale，旋转rotate，剪切shear，翻转flip和平移translate等操作的组合。在OpenCV中，仿射变换的矩阵是一个2×3的矩阵，
-
 
 $$
 M = \left[\begin{matrix}
@@ -222,14 +228,19 @@ $$
 import numpy as np
 import cv2 as cv
 import matplotlib.pyplot as plt
+# 1 图像读取
 img = cv.imread("./image/image2.jpg")
-rows,cols = img.shape[:2]
 
+# 2 仿射变换
+rows,cols = img.shape[:2]
+# 2.1 创建变换矩阵
 pts1 = np.float32([[50,50],[200,50],[50,200]])
 pts2 = np.float32([[100,100],[200,50],[100,250]])
 M = cv.getAffineTransform(pts1,pts2)
+# 2.2 完成仿射变换
 dst = cv.warpAffine(img,M,(cols,rows))
 
+# 3 图像显示
 fig,axes=plt.subplots(nrows=1,ncols=2,figsize=(10,8),dpi=100)
 axes[0].imshow(img[:,:,::-1])
 axes[0].set_title("原图")
@@ -252,17 +263,19 @@ plt.show()
    import numpy as np
    import cv2 as cv
    import matplotlib.pyplot as plt
+   # 1 读取图像
    img = cv.imread("./image/image2.jpg")
+   # 2 透射变换
    rows,cols = img.shape[:2]
-   
+   # 2.1 创建变换矩阵
    pts1 = np.float32([[56,65],[368,52],[28,387],[389,390]])
    pts2 = np.float32([[100,145],[300,100],[80,290],[310,300]])
    
    M = cv.getPerspectiveTransform(pts1,pts2)
-   
+   # 2.2 进行变换
    dst = cv.warpPerspective(img,M,(cols,rows))
    
-   
+   # 3 图像显示
    fig,axes=plt.subplots(nrows=1,ncols=2,figsize=(10,8),dpi=100)
    axes[0].imshow(img[:,:,::-1])
    axes[0].set_title("原图")
@@ -275,9 +288,9 @@ plt.show()
 
 ## 6 图像金字塔
 
-图像金字塔是图像多尺度表达的一种，最主要用于图像的分割，是一种以多分辨率来解释图像的有效但概念简单的结构。
+	图像金字塔是图像多尺度表达的一种，最主要用于图像的分割，是一种以多分辨率来解释图像的有效但概念简单的结构。
 
-图像金字塔用于机器视觉和图像压缩，一幅图像的金字塔是一系列以金字塔形状排列的分辨率逐步降低，且来源于同一张原始图的图像集合。其通过梯次向下采样获得，直到达到某个终止条件才停止采样。
+	图像金字塔用于机器视觉和图像压缩，一幅图像的金字塔是一系列以金字塔形状排列的分辨率逐步降低，且来源于同一张原始图的图像集合。其通过梯次向下采样获得，直到达到某个终止条件才停止采样。
 
 金字塔的底部是待处理图像的高分辨率表示，而顶部是低分辨率的近似，层级越高，图像越小，分辨率越低。![timg](assets/timg.jpeg)
 
@@ -294,10 +307,12 @@ plt.show()
    import numpy as np
    import cv2 as cv
    import matplotlib.pyplot as plt
+   # 1 图像读取
    img = cv.imread("./image/image2.jpg")
-   
+   # 2 进行图像采样
    up_img = cv.pyrUp(img)  # 上采样操作
    img_1 = cv.pyrDown(img)  # 下采样操作
+   # 3 图像显示
    cv.imshow('enlarge', up_img)
    cv.imshow('original', img)
    cv.imshow('shrink', img_1)

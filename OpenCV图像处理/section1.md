@@ -102,16 +102,16 @@
    import numpy as np
    import cv2 as cv
    import matplotlib.pyplot as plt
-   
+   # 1 读取图像
    img = cv.imread("./image/image3.png")
+   # 2 创建核结构
    kernel = np.ones((5, 5), np.uint8)
    
-   # 腐蚀
-   erosion = cv.erode(img, kernel) 
-   # 膨胀
-   dilate = cv.dilate(img,kernel)
+   # 3 图像腐蚀和膨胀
+   erosion = cv.erode(img, kernel) # 腐蚀
+   dilate = cv.dilate(img,kernel) # 膨胀
    
-   
+   # 4 图像展示
    fig,axes=plt.subplots(nrows=1,ncols=3,figsize=(10,8),dpi=100)
    axes[0].imshow(img)
    axes[0].set_title("原图")
@@ -126,7 +126,7 @@
 
 ## 2.2 开闭运算
 
-	开运算和闭运算是将腐蚀和膨胀按照一定的次序进行处理。 但这两者并不是可逆的，即先开后闭并不能得到原来的图像。
+开运算和闭运算是将腐蚀和膨胀按照一定的次序进行处理。 但这两者并不是可逆的，即先开后闭并不能得到原来的图像。
 
 1. 开运算
 
@@ -160,16 +160,15 @@
    import numpy as np
    import cv2 as cv
    import matplotlib.pyplot as plt
-   
+   # 1 读取图像
    img1 = cv.imread("./image/image5.png")
    img2 = cv.imread("./image/image6.png")
+   # 2 创建核结构
    kernel = np.ones((10, 10), np.uint8)
-   
-   # 开运算
-   cvOpen = cv.morphologyEx(img1,cv.MORPH_OPEN,kernel) 
-   # 闭运算
-   cvClose = cv.morphologyEx(img2,cv.MORPH_CLOSE,kernel)
-   
+   # 3 图像的开闭运算
+   cvOpen = cv.morphologyEx(img1,cv.MORPH_OPEN,kernel) # 开运算
+   cvClose = cv.morphologyEx(img2,cv.MORPH_CLOSE,kernel)# 闭运算
+   # 4 图像展示
    fig,axes=plt.subplots(nrows=2,ncols=2,figsize=(10,8))
    axes[0,0].imshow(img1)
    axes[0,0].set_title("原图")
@@ -234,16 +233,15 @@
 import numpy as np
 import cv2 as cv
 import matplotlib.pyplot as plt
-
+# 1 读取图像
 img1 = cv.imread("./image/image5.png")
 img2 = cv.imread("./image/image6.png")
+# 2 创建核结构
 kernel = np.ones((10, 10), np.uint8)
-
-# 礼帽运算
-cvOpen = cv.morphologyEx(img1,cv.MORPH_TOPHAT,kernel) 
-# 黑帽运算
-cvClose = cv.morphologyEx(img2,cv.MORPH_BLACKHAT,kernel)
-
+# 3 图像的礼帽和黑帽运算
+cvOpen = cv.morphologyEx(img1,cv.MORPH_TOPHAT,kernel) # 礼帽运算
+cvClose = cv.morphologyEx(img2,cv.MORPH_BLACKHAT,kernel)# 黑帽运算
+# 4 图像显示
 fig,axes=plt.subplots(nrows=2,ncols=2,figsize=(10,8))
 axes[0,0].imshow(img1)
 axes[0,0].set_title("原图")
